@@ -50,6 +50,7 @@ import net.wurstclient.nochatreports.NoChatReportsChannelHandler;
 import net.wurstclient.other_feature.OtfList;
 import net.wurstclient.other_feature.OtherFeature;
 import net.wurstclient.settings.SettingsFile;
+import net.wurstclient.update.ProblematicResourcePackDetector;
 import net.wurstclient.update.WurstUpdater;
 import net.wurstclient.util.json.JsonException;
 
@@ -60,7 +61,7 @@ public enum WurstClient
 	public static final MinecraftClient MC = MinecraftClient.getInstance();
 	public static final IMinecraftClient IMC = (IMinecraftClient)MC;
 	
-	public static final String VERSION = "7.27.2";
+	public static final String VERSION = "7.28";
 	public static final String MC_VERSION = "1.19.2";
 	
 	private WurstAnalytics analytics;
@@ -82,6 +83,7 @@ public enum WurstClient
 	private boolean enabled = true;
 	private static boolean guiInitialized;
 	private WurstUpdater updater;
+	private ProblematicResourcePackDetector problematicPackDetector;
 	private Path wurstFolder;
 	
 	private KeyBinding zoomKey;
@@ -141,6 +143,9 @@ public enum WurstClient
 		
 		updater = new WurstUpdater();
 		eventManager.add(UpdateListener.class, updater);
+		
+		problematicPackDetector = new ProblematicResourcePackDetector();
+		problematicPackDetector.start();
 		
 		Path altsFile = wurstFolder.resolve("alts.encrypted_json");
 		Path encFolder =
@@ -435,6 +440,11 @@ public enum WurstClient
 	public WurstUpdater getUpdater()
 	{
 		return updater;
+	}
+	
+	public ProblematicResourcePackDetector getProblematicPackDetector()
+	{
+		return problematicPackDetector;
 	}
 	
 	public Path getWurstFolder()
