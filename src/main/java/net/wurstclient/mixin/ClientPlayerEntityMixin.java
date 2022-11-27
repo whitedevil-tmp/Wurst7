@@ -41,7 +41,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3d;
 import net.wurstclient.WurstClient;
 import net.wurstclient.event.EventManager;
-import net.wurstclient.events.IsPlayerInLavaListener.IsPlayerInLavaEvent;
 import net.wurstclient.events.IsPlayerInWaterListener.IsPlayerInWaterEvent;
 import net.wurstclient.events.KnockbackListener.KnockbackEvent;
 import net.wurstclient.events.PlayerMoveListener.PlayerMoveEvent;
@@ -81,16 +80,7 @@ public class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
 		EventManager.fire(UpdateEvent.INSTANCE);
 	}
 	
-	@Redirect(at = @At(value = "INVOKE",
-		target = "Lnet/minecraft/client/network/ClientPlayerEntity;isUsingItem()Z",
-		ordinal = 0), method = "tickMovement()V")
-	private boolean wurstIsUsingItem(ClientPlayerEntity player)
-	{
-		if(WurstClient.INSTANCE.getHax().noSlowdownHack.isEnabled())
-			return false;
-		
-		return player.isUsingItem();
-	}
+
 	
 	@Inject(at = {@At("HEAD")}, method = {"sendMovementPackets()V"})
 	private void onSendMovementPacketsHEAD(CallbackInfo ci)
@@ -187,23 +177,6 @@ public class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
 		EventManager.fire(event);
 		
 		return event.isInWater();
-	}
-	
-	@Override
-	public boolean isInLava()
-	{
-		boolean inLava = super.isInLava();
-		IsPlayerInLavaEvent event = new IsPlayerInLavaEvent(inLava);
-		EventManager.fire(event);
-		
-		return event.isInLava();
-	}
-	
-	@Override
-	public boolean isSpectator()
-	{
-		return super.isSpectator()
-			|| WurstClient.INSTANCE.getHax().freecamHack.isEnabled();
 	}
 	
 	@Override

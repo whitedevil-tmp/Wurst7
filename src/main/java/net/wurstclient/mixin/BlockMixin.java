@@ -41,16 +41,5 @@ public abstract class BlockMixin implements ItemConvertible
 			cir.setReturnValue(event.isRendered());
 	}
 	
-	@Inject(at = {@At("HEAD")},
-		method = {"getVelocityMultiplier()F"},
-		cancellable = true)
-	private void onGetVelocityMultiplier(CallbackInfoReturnable<Float> cir)
-	{
-		HackList hax = WurstClient.INSTANCE.getHax();
-		if(hax == null || !hax.noSlowdownHack.isEnabled())
-			return;
-		
-		if(cir.getReturnValueF() < 1)
-			cir.setReturnValue(1F);
-	}
+
 }

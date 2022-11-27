@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "wurst",
+  "id": "wurst-meteor",
   "version": "${version}",
 
   "name": "Wurst Client",

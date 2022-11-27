@@ -108,19 +108,7 @@ public abstract class GameRendererMixin
 		EventManager.fire(event);
 	}
 	
-	@Redirect(
-		at = @At(value = "INVOKE",
-			target = "Lnet/minecraft/util/math/MathHelper;lerp(FFF)F",
-			ordinal = 0),
-		method = {
-			"renderWorld(FJLnet/minecraft/client/util/math/MatrixStack;)V"})
-	private float wurstNauseaLerp(float delta, float first, float second)
-	{
-		if(!WurstClient.INSTANCE.getHax().antiWobbleHack.isEnabled())
-			return MathHelper.lerp(delta, first, second);
-		
-		return 0;
-	}
+
 	
 	@Inject(at = {@At("HEAD")},
 		method = {
